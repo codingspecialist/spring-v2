@@ -1,0 +1,27 @@
+{{>layout/header}}
+
+<div class="container p-5">
+
+    <!-- 수정삭제버튼 -->
+    <div class="d-flex justify-content-end">
+        <a href="/board/1/update-form" class="btn btn-warning me-1">수정</a>
+        <form>
+            <button class="btn btn-danger">삭제</button>
+        </form>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <b>작성자</b> : 익명
+    </div>
+
+    <!-- 게시글내용 -->
+    <div>
+        <h2><b>제목1</b></h2>
+        <hr/>
+        <div class="m-4 p-2">
+            내용1
+        </div>
+    </div>
+</div>
+
+{{>layout/footer}}
