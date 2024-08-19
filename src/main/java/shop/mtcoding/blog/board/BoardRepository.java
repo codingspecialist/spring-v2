@@ -14,6 +14,18 @@ public class BoardRepository {
     @Autowired // IoC에 있는 객체를 찾아온다.
     private EntityManager em;
 
+    public Board findById(int id) {
+        Query query = em.createNativeQuery("select * from board_tb where id = ?", Board.class);
+        query.setParameter(1, id);
+        try {
+            Board board = (Board) query.getSingleResult();
+            return board;
+        } catch (Exception e) {
+            // 익세션을 내가 잡은것 까지 배움 - 처리 방법은 v2에서 배우기
+            throw new RuntimeException("게시글 id를 찾을 수 없습니다");
+        }
+    }
+
     public List<Board> findAll() {
         Query query = em.createNativeQuery("select * from board_tb order by id desc", Board.class);
         List<Board> boardList = query.getResultList();

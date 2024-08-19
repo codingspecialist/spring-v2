@@ -16,6 +16,20 @@ public class BoardRepositoryTest {
     private BoardRepository boardRepository;
 
     @Test
+    public void findById_test() {
+        // given
+        int id = 6;
+
+        // when
+        Board board = boardRepository.findById(id);
+
+        // eye
+        System.out.println(board.getId());
+        System.out.println(board.getTitle());
+        System.out.println(board.getContent());
+    }
+
+    @Test
     public void findAll_test() {
         // given
 
