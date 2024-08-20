@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.board;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,9 +17,42 @@ public class BoardRepositoryTest {
     private BoardRepository boardRepository;
 
     @Test
-    public void findById_test() {
+    public void updateById_test() {
+        // given
+        int id = 1;
+        String title = "제목1변경";
+        String content = "내용1변경";
+
+        // when
+        boardRepository.updateById(title, content, id);
+
+        // then
+        Board board = boardRepository.findById(id);
+        Assertions.assertThat(board.getTitle()).isEqualTo("제목1변경");
+    }
+
+
+    @Test
+    public void deleteById_test() {
         // given
         int id = 6;
+
+        // when
+        boardRepository.deleteById(id);
+
+        // eye
+        try {
+            boardRepository.findById(id);
+        } catch (Exception e) {
+            Assertions.assertThat(e.getMessage()).isEqualTo("게시글 id를 찾을 수 없습니다");
+        }
+
+    }
+
+    @Test
+    public void findById_test() {
+        // given
+        int id = 1;
 
         // when
         Board board = boardRepository.findById(id);
@@ -27,6 +61,9 @@ public class BoardRepositoryTest {
         System.out.println(board.getId());
         System.out.println(board.getTitle());
         System.out.println(board.getContent());
+
+        // then (코드)
+        Assertions.assertThat(board.getTitle()).isEqualTo("제목1");
     }
 
     @Test
