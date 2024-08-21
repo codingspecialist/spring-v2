@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -23,6 +24,8 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String email;
+
+    @CreationTimestamp
     private Timestamp createdAt;
 
     @Builder
