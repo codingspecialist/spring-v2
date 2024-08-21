@@ -37,9 +37,7 @@ public class BoardController {
     // subtitle=제목1&postContent=내용1
     @PostMapping("/board/save")
     public String save(@RequestParam("title") String title, @RequestParam("content") String content) { // 스프링 기본전략 = x-www-form-urlencoded 파싱
-
         boardRepository.save(title, content);
-
         return "redirect:/board";
     }
 

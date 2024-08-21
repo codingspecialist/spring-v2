@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import shop.mtcoding.blog.user.User;
 
 import java.sql.Timestamp;
 
@@ -22,6 +23,10 @@ public class Board {
     @Column(nullable = false)
     private String content;
     private Timestamp createdAt;
+
+    // fk
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     @Builder
     public Board(Integer id, String title, String content, Timestamp createdAt) {

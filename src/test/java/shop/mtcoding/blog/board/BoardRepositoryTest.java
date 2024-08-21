@@ -17,6 +17,14 @@ public class BoardRepositoryTest {
     private BoardRepository boardRepository;
 
     @Test
+    public void findByIdV2_test() {
+        int id = 1;
+
+        Board board = boardRepository.findByIdV2(id);
+        System.out.println(board.getUser().getUsername());
+    }
+
+    @Test
     public void updateById_test() {
         // given
         int id = 1;
@@ -58,12 +66,7 @@ public class BoardRepositoryTest {
         Board board = boardRepository.findById(id);
 
         // eye
-        System.out.println(board.getId());
-        System.out.println(board.getTitle());
-        System.out.println(board.getContent());
-
-        // then (코드)
-        Assertions.assertThat(board.getTitle()).isEqualTo("제목1");
+        System.out.println(board.getUser().getUsername());
     }
 
     @Test
@@ -71,14 +74,16 @@ public class BoardRepositoryTest {
         // given
 
         // when
+        System.out.println("1. 첫번째 조회");
         List<Board> boardList = boardRepository.findAll();
+        System.out.println("userId : " + boardList.get(0).getUser().getId());
+        System.out.println("=================");
 
         // eye
-        System.out.println("사이즈 : " + boardList.size());
-        for (Board board : boardList) {
-            System.out.println(board.getTitle());
-            System.out.println(board.getContent());
-        }
+        System.out.println("2. 레이지 로딩");
+        System.out.println("username : " + boardList.get(0).getUser().getUsername());
+        System.out.println("username : " + boardList.get(4).getUser().getUsername());
+
     }
 
 
@@ -87,7 +92,7 @@ public class BoardRepositoryTest {
     @Test
     public void save_test() {
         // given (매개변수를 강제로 만들기)
-        String title = null;
+        String title = "제목1";
         String content = "내용1";
 
         // when
