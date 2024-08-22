@@ -12,7 +12,11 @@ public class UserRequest {
 
         // DTO -> UserObject
         public User toEntity() { // insert 할때만 필요
-            return User.builder().username(username).password(password).email(email).build();
+            return User.builder()
+                    .username(username)
+                    .password(password)
+                    .email(email)
+                    .build();
         }
     }
 

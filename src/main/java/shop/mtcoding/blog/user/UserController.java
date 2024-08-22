@@ -1,19 +1,23 @@
 package shop.mtcoding.blog.user;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@RequiredArgsConstructor // final이 불은 애들의 생성자를 만들어준다
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final HttpSession session;
 
-    @Autowired
-    private HttpSession session;
+    @GetMapping("/logout")
+    public String logout() {
+        session.invalidate();
+        return "redirect:/board";
+    }
 
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO loginDTO) {
