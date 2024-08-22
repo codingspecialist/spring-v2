@@ -19,4 +19,12 @@
     </div>
 </div>
 
+<script>
+    fetch("/board/save", {
+        method: "post",
+        data: "title=코스바보&content=진짜바보",
+        headers: {"Content-type": "application/json; charset=utf-8"}
+    });
+</script>
+
 {{>layout/footer}}

@@ -17,15 +17,14 @@ import java.util.List;
 @Controller // 식별자 요청을 받을 수 있다.
 public class BoardController {
 
+    private final BoardService boardService;
     private final BoardRepository boardRepository;
     private final HttpSession session;
 
+
     @GetMapping("/test/board/1")
     public void testBoard() {
-        List<Board> boardList = boardRepository.findAll();
-        System.out.println("---------------------------------------------");
-        System.out.println(boardList.get(2).getUser().getPassword());
-        System.out.println("---------------------------------------------");
+        boardService.good();
     }
 
 
@@ -49,6 +48,9 @@ public class BoardController {
     // subtitle=제목1&postContent=내용1
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO saveDTO) { // 스프링 기본전략 = x-www-form-urlencoded 파싱
+
+        saveDTO.setContent(saveDTO.getContent().replace("<", "&lt"));
+
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         // 인증 체크 필요함
@@ -75,12 +77,18 @@ public class BoardController {
     // 3. 응답 : board/detail
     @GetMapping("/board/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
-        Board board = boardRepository.findById(id);
-        request.setAttribute("model", board);
-        request.setAttribute("isOwner", false);
+//        Board board = boardRepository.findById(id);
+//        request.setAttribute("model", board);
+//        request.setAttribute("isOwner", false);
+
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        BoardResponse.DetailDTO detailDTO = boardService.상세보기(id, sessionUser);
+        request.setAttribute("model", detailDTO);
 
         return "board/detail";
     }
+
 
     // 1. 메서드 : Get
     // 2. 주소 : /board/save-form
