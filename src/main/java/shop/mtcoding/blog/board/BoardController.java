@@ -22,12 +22,6 @@ public class BoardController {
     private final HttpSession session;
 
 
-    @GetMapping("/test/board/1")
-    public void testBoard() {
-        boardService.good();
-    }
-
-
     // url : http://localhost:8080/board/1/update
     // body : title=제목1변경&content=내용1변경
     // content-type : x-www-form-urlencoded

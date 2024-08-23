@@ -11,10 +11,6 @@ import shop.mtcoding.blog.user.User;
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    public void good() {
-        throw new RuntimeException("안녕");
-    }
-
     public BoardResponse.DetailDTO 상세보기(int id, User sessionUser) {
         Board board = boardRepository.findById(id); // 조인 (Board - User)
         return new BoardResponse.DetailDTO(board, sessionUser);
