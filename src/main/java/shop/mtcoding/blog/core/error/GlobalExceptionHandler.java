@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     // 인증 실패 (클라이언트가 인증없이 요청했거나, 인증을 하거나 실패했거나)
     @ExceptionHandler(Exception401.class)
     public String ex401(Exception e) {
-        return Script.back(e.getMessage());
+        return Script.href("인증되지 않았습니다", "/login-form");
     }
 
     // 권한 실패 (인증은 되어 있는데, 삭제하려는 게시글이 내가 적은게 아니다)
