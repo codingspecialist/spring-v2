@@ -10,6 +10,7 @@ import shop.mtcoding.blog.user.User;
 
 import java.util.List;
 
+
 @RequiredArgsConstructor
 @Service
 public class BoardService {

@@ -2,8 +2,10 @@ package shop.mtcoding.blog.board;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ public class BoardController {
     // body : title=제목1변경&content=내용1변경
     // content-type : x-www-form-urlencoded
     @PostMapping("/api/board/{id}/update")
-    public String update(@PathVariable("id") int id, BoardRequest.UpdateDTO updateDTO) {
+    public String update(@PathVariable("id") int id, @Valid BoardRequest.UpdateDTO updateDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         boardService.게시글수정(id, updateDTO, sessionUser);
@@ -43,7 +45,7 @@ public class BoardController {
 
     // subtitle=제목1&postContent=내용1
     @PostMapping("/api/board/save")
-    public String save(BoardRequest.SaveDTO saveDTO) { // 스프링 기본전략 = x-www-form-urlencoded 파싱
+    public String save(@Valid BoardRequest.SaveDTO saveDTO, Errors errors) { // 스프링 기본전략 = x-www-form-urlencoded 파싱
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         boardService.게시글쓰기(saveDTO, sessionUser);
