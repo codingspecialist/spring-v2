@@ -7,7 +7,7 @@ import shop.mtcoding.blog.core.util.Script;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
+    
     // 유효성 검사 실패 (잘못된 클라이언트의 요청)
     @ExceptionHandler(Exception400.class)
     public String ex400(Exception e) {

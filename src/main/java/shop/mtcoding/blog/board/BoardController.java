@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import shop.mtcoding.blog.core.error.ex.Exception401;
 import shop.mtcoding.blog.user.User;
 
@@ -26,8 +25,12 @@ public class BoardController {
     // body : title=제목1변경&content=내용1변경
     // content-type : x-www-form-urlencoded
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable("id") int id, @RequestParam("title") String title, @RequestParam("content") String content) {
-        //boardRepository.updateById(title, content, id);
+    public String update(@PathVariable("id") int id, BoardRequest.UpdateDTO updateDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) {
+            throw new Exception401("로그인이 필요합니다");
+        }
+        boardService.게시글수정(id, updateDTO, sessionUser);
         return "redirect:/board/" + id;
     }
 
@@ -72,10 +75,6 @@ public class BoardController {
     // 3. 응답 : board/detail
     @GetMapping("/board/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
-//        Board board = boardRepository.findById(id);
-//        request.setAttribute("model", board);
-//        request.setAttribute("isOwner", false);
-
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         BoardResponse.DetailDTO detailDTO = boardService.상세보기(id, sessionUser);
@@ -90,6 +89,10 @@ public class BoardController {
     // 3. 응답 : board/save-form
     @GetMapping("/board/save-form")
     public String saveForm() {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) {
+            throw new Exception401("인증되지 않았습니다");
+        }
         return "board/save-form";
     }
 
@@ -98,8 +101,13 @@ public class BoardController {
     // 3. 응답 : board/update-form
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable("id") int id, HttpServletRequest request) {
-        //Board board = boardRepository.findById(id);
-        //request.setAttribute("model", board);
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) {
+            throw new Exception401("인증되지 않았습니다");
+        }
+        Board board = boardService.게시글수정화면가기(id, sessionUser);
+        request.setAttribute("model", board);
+
         return "board/update-form";
     }
 }
