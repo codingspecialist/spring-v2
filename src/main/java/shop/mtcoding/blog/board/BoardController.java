@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import shop.mtcoding.blog.core.error.ex.Exception401;
 import shop.mtcoding.blog.user.User;
 
 import java.util.List;
@@ -24,45 +23,36 @@ public class BoardController {
     // url : http://localhost:8080/board/1/update
     // body : title=제목1변경&content=내용1변경
     // content-type : x-www-form-urlencoded
-    @PostMapping("/board/{id}/update")
+    @PostMapping("/api/board/{id}/update")
     public String update(@PathVariable("id") int id, BoardRequest.UpdateDTO updateDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) {
-            throw new Exception401("로그인이 필요합니다");
-        }
+
         boardService.게시글수정(id, updateDTO, sessionUser);
         return "redirect:/board/" + id;
     }
 
 
-    @PostMapping("/board/{id}/delete")
+    @PostMapping("/api/board/{id}/delete")
     public String delete(@PathVariable("id") int id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) {
-            throw new Exception401("로그인이 필요합니다");
-        }
+
         boardService.게시글삭제(id, sessionUser);
-        return "redirect:/board";
+        return "redirect:/";
     }
 
 
     // subtitle=제목1&postContent=내용1
-    @PostMapping("/board/save")
+    @PostMapping("/api/board/save")
     public String save(BoardRequest.SaveDTO saveDTO) { // 스프링 기본전략 = x-www-form-urlencoded 파싱
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        // 인증 체크 필요함
-        if (sessionUser == null) {
-            throw new Exception401("로그인이 필요합니다");
-        }
-
         boardService.게시글쓰기(saveDTO, sessionUser);
-        return "redirect:/board";
+        return "redirect:/";
     }
 
 
     // get, post
-    @GetMapping("/board")
+    @GetMapping("/")
     public String list(HttpServletRequest request) {
         List<Board> boardList = boardService.게시글목록보기();
         request.setAttribute("models", boardList);
@@ -87,24 +77,18 @@ public class BoardController {
     // 1. 메서드 : Get
     // 2. 주소 : /board/save-form
     // 3. 응답 : board/save-form
-    @GetMapping("/board/save-form")
+    @GetMapping("/api/board/save-form")
     public String saveForm() {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) {
-            throw new Exception401("인증되지 않았습니다");
-        }
         return "board/save-form";
     }
 
     // 1. 메서드 : Get
     // 2. 주소 : /board/1/update-form
     // 3. 응답 : board/update-form
-    @GetMapping("/board/{id}/update-form")
+    @GetMapping("/api/board/{id}/update-form")
     public String updateForm(@PathVariable("id") int id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) {
-            throw new Exception401("인증되지 않았습니다");
-        }
+
         Board board = boardService.게시글수정화면가기(id, sessionUser);
         request.setAttribute("model", board);
 

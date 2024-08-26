@@ -1,13 +1,17 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 public class UserRequest {
 
     @Data
     public static class JoinDTO {
+        @NotEmpty
         private String username;
+        @NotEmpty
         private String password;
+        @NotEmpty
         private String email;
 
         // DTO -> UserObject
