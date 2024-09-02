@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.blog.core.error.ex.Exception404;
 import shop.mtcoding.blog.user.User;
 
@@ -18,7 +17,6 @@ public class BoardRepository {
     // IoC에 있는 객체를 찾아온다.
     private final EntityManager em;
 
-    @Transactional
     public void updateById(String title, String content, int id) {
         Query query = em.createNativeQuery("update board_tb set title = ?, content = ? where id = ?");
         query.setParameter(1, title);
@@ -28,7 +26,6 @@ public class BoardRepository {
         query.executeUpdate();
     }
 
-    @Transactional
     public void deleteById(int id) {
         Query query = em.createNativeQuery("delete from board_tb where id = ?");
         query.setParameter(1, id);
@@ -101,7 +98,6 @@ public class BoardRepository {
     }
 
     // insert 하기
-    @Transactional
     public void save(Board board) {
         em.persist(board);
     }
